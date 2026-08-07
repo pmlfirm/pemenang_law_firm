@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+
+:root {
+  --background: #0f172a;
+  --foreground: #f5efe1;
+  --muted: #a8a29e;
+  --gold: #d4af37;
+  --gold-soft: rgba(212, 175, 55, 0.18);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top, rgba(212, 175, 55, 0.08), transparent 28%),
+    linear-gradient(180deg, #0f172a 0%, #111827 45%, #1f2937 100%);
+  color: var(--foreground);
+  font-family: Inter, 'Segoe UI', Arial, sans-serif;
+}
+
+/* ── Reusable section kicker ── */
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(212, 175, 55, 0.95);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.section-kicker::before,
+.section-kicker::after {
+  content: '';
+  display: block;
+  width: 2.25rem;
+  height: 1px;
+  background: rgba(212, 175, 55, 0.6);
+}
+
+/* ── Hero panel ── */
+.hero-panel {
+  background:
+    linear-gradient(135deg, rgba(15,23,42,.88) 0%, rgba(17,24,39,.82) 55%, rgba(31,41,55,.75) 100%), radial-gradient(circle at top right, rgba(212,175,55,.16), transparent 35%), linear-gradient(120deg,#1e293b 0%, #111827 55%, #0f172a 100%);
+}
+
+/* ── Gold-bordered cards ── */
+.gold-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.015) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+}
+
+.gold-outline {
+  border: 1px solid rgba(212, 175, 55, 0.24);
+}
+
+.text-muted {
+  color: rgba(245, 239, 225, 0.72);
+}
+
+/* ── WhatsApp pulse animation ── */
+@keyframes wa-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+.wa-float {
+  animation: wa-pulse 2s ease-in-out infinite;
+}
+
+.wa-float:hover {
+  animation: none;
+  transform: translateY(-2px) scale(1.1);
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.35);
+}
+
+/* ── Hero fade-up animation ── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out both;
+}
+
+/* ── Hero slide cross-fade ── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.slide-fade-in {
+  animation: fade-in 0.8s ease-out both;
+}
+
+/* ── WhatsApp bounce (subtle) ── */
+@keyframes wa-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.wa-bounce {
+  animation: wa-bounce 2.5s ease-in-out infinite;
+}
