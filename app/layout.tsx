@@ -33,9 +33,9 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/logo-pemenang-crown.jpg',
-        width: 384,
-        height: 384,
+        url: '/logo-pml-transparent.png',
+        width: 590,
+        height: 1000,
         alt: 'Logo Pemenang Mandiri Law Firm',
       },
     ],
@@ -45,11 +45,11 @@ export const metadata: Metadata = {
     title: 'Pemenang Mandiri Law Firm & Partners',
     description:
       'Professional legal services for criminal and civil matters, and insurance claim legal support.',
-    images: ['/logo-pemenang-crown.jpg'],
+    images: ['/logo-pml-transparent.png'],
   },
   icons: {
-    icon: '/logo-pemenang-crown.jpg',
-    apple: '/logo-pemenang-crown.jpg',
+    icon: '/logo-pml-transparent.png',
+    apple: '/logo-pml-transparent.png',
   },
   metadataBase: new URL('https://pemenangmandirilawfirm.vercel.app'),
 }
@@ -79,7 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 '@type': 'LegalService',
                 name: 'Pemenang Mandiri Law Firm & Partners',
                 url: 'https://pemenangmandirilawfirm.vercel.app',
-                logo: 'https://pemenangmandirilawfirm.vercel.app/logo-pemenang-crown.jpg',
+                logo: 'https://pemenangmandirilawfirm.vercel.app/logo-pml-transparent.png',
                 description:
                   'Professional legal services for criminal and civil matters, and insurance claim legal support.',
                 telephone: '+62 896-3871-4065',
