@@ -51,6 +51,9 @@ export const metadata: Metadata = {
     icon: '/logo-pml-transparent.png',
     apple: '/logo-pml-transparent.png',
   },
+  verification: {
+    google: '3uBwTq90irYRI0lUtjZeiZssoFqv8hgpfSep1o_dB8s',
+  },
   metadataBase: new URL('https://pemenangmandirilawfirm.vercel.app'),
 }
 
@@ -58,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        <meta name="google-site-verification" content="3uBwTq90irYRI0lUtjZeiZssoFqv8hgpfSep1o_dB8s" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
