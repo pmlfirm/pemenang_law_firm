@@ -3,19 +3,39 @@ import { LanguageProvider } from '@/components/language-context'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Pemenang Mandiri Lawfirm & Partners | Firma Hukum Terpercaya Surabaya',
+  title: 'Firma Hukum Terbaik Surabaya | Pemenang Mandiri Lawfirm & Partners',
   description:
-    'Pemenang Mandiri Lawfirm & Partners di Blok C, Plaza Segi 8 No.819, Sonokwijenan, Kec. Sukomanunggal, Surabaya menyediakan layanan hukum profesional untuk hukum pidana, perdata, dan pendampingan hukum klaim asuransi.',
+    'Pemenang Mandiri Lawfirm & Partners - Firma hukum & kantor hukum terbaik, terbagus, ramah, dan terpercaya di Surabaya (Blok C, Plaza Segi 8 No.819, Sonokwijenan, Sukomanunggal). Melayani hukum pidana, perdata, dan klaim asuransi.',
   keywords: [
-    'law firm',
-    'firma hukum',
-    'pengacara',
-    'civil law',
-    'criminal law',
-    'insurance claim lawyer',
-    'hukum pidana',
-    'hukum perdata',
-    'klaim asuransi',
+    /* ── Target User Keywords ── */
+    'firma hukum terbaik',
+    'kantor hukum terbaik',
+    'firma hukum terbagus',
+    'firma hukum ramah',
+    'firma hukum murah',
+    'kantor hukum terbagus',
+    'firma hukum surabaya',
+    'firma hukum di surabaya',
+
+    /* ── High-Intent Local & General Search Queries ── */
+    'kantor hukum surabaya',
+    'kantor hukum di surabaya',
+    'pengacara terbaik surabaya',
+    'pengacara terbagus surabaya',
+    'pengacara murah surabaya',
+    'pengacara ramah surabaya',
+    'konsultan hukum surabaya',
+    'pengacara pidana surabaya',
+    'pengacara perdata surabaya',
+    'pengacara klaim asuransi surabaya',
+    'advokat terbaik surabaya',
+    'bantuan hukum surabaya',
+    'jasa pengacara terbaik surabaya',
+    'firma hukum terpercaya surabaya',
+    'law firm surabaya',
+    'civil law lawyer surabaya',
+    'criminal law lawyer surabaya',
+    'insurance claim lawyer surabaya',
     'Pemenang Mandiri Lawfirm & Partners',
     'Pemenang Mandiri',
     'Surabaya',
@@ -30,9 +50,9 @@ export const metadata: Metadata = {
   creator: 'Pemenang Mandiri Lawfirm & Partners',
   publisher: 'Pemenang Mandiri Lawfirm & Partners',
   openGraph: {
-    title: 'Pemenang Mandiri Lawfirm & Partners',
+    title: 'Firma Hukum Terbaik Surabaya | Pemenang Mandiri Lawfirm & Partners',
     description:
-      'Professional legal services for criminal, civil matters, and insurance claim legal support in Surabaya.',
+      'Firma hukum & kantor hukum terbaik, terbagus, ramah, dan terpercaya di Surabaya. Layanan profesional hukum pidana, perdata, dan klaim asuransi.',
     url: 'https://pemenangmandirilawfirm.vercel.app',
     siteName: 'Pemenang Mandiri Lawfirm & Partners',
     locale: 'en_US',
@@ -42,15 +62,15 @@ export const metadata: Metadata = {
         url: '/logo-pml-transparent.png',
         width: 590,
         height: 1000,
-        alt: 'Logo Pemenang Mandiri Lawfirm & Partners',
+        alt: 'Logo Pemenang Mandiri Lawfirm & Partners - Firma Hukum Terbaik Surabaya',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pemenang Mandiri Lawfirm & Partners',
+    title: 'Firma Hukum Terbaik Surabaya | Pemenang Mandiri Lawfirm & Partners',
     description:
-      'Professional legal services for criminal, civil matters, and insurance claim legal support in Surabaya.',
+      'Firma hukum & kantor hukum terbaik, terbagus, ramah, dan terpercaya di Surabaya. Layanan profesional hukum pidana, perdata, dan klaim asuransi.',
     images: ['/logo-pml-transparent.png'],
   },
   icons: {
@@ -79,7 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans antialiased">
         <LanguageProvider>{children}</LanguageProvider>
 
-        {/* ── JSON-LD Structured Data for Local SEO ── */}
+        {/* ── JSON-LD Structured Data for Local & Search Engine Optimization ── */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -88,13 +108,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 '@context': 'https://schema.org',
                 '@type': 'LegalService',
                 name: 'Pemenang Mandiri Lawfirm & Partners',
+                alternateName: [
+                  'Firma Hukum Terbaik Surabaya',
+                  'Kantor Hukum Terbagus & Ramah Surabaya',
+                  'Pemenang Mandiri Lawfirm',
+                ],
                 url: 'https://pemenangmandirilawfirm.vercel.app',
                 logo: 'https://pemenangmandirilawfirm.vercel.app/logo-pml-transparent.png',
                 image: 'https://pemenangmandirilawfirm.vercel.app/logo-pml-transparent.png',
                 description:
-                  'Pemenang Mandiri Lawfirm & Partners menyediakan layanan hukum profesional untuk hukum pidana, perdata, dan pendampingan hukum terkait klaim asuransi di Surabaya.',
+                  'Pemenang Mandiri Lawfirm & Partners - Firma hukum terbaik, kantor hukum terbagus, ramah, murah & terpercaya di Surabaya (Blok C, Plaza Segi 8 No.819, Sonokwijenan, Sukomanunggal). Menyediakan pendampingan hukum pidana, perdata, dan klaim asuransi.',
                 telephone: '+62 896-3871-4065',
                 priceRange: '$$',
+                keywords:
+                  'firma hukum terbaik, kantor hukum terbaik, firma hukum terbagus, firma hukum ramah, firma hukum murah, kantor hukum terbagus, firma hukum surabaya, firma hukum di surabaya, kantor pengacara surabaya, advokat terbaik surabaya',
+                knowsAbout: [
+                  'Hukum Pidana',
+                  'Hukum Perdata',
+                  'Sengketa Kontrak & Utang Piutang',
+                  'Pendampingan Hukum Klaim Asuransi',
+                  'Konsultasi Hukum Surabaya',
+                ],
                 address: {
                   '@type': 'PostalAddress',
                   streetAddress: 'Blok C, Plaza Segi 8 No.819',
@@ -104,9 +138,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   postalCode: '60255',
                   addressCountry: 'ID',
                 },
-                hasMap: 'https://maps.google.com/?q=Blok+C,+Plaza+Segi+8+No.819,+Sonokwijenan,+Kec.+Sukomanunggal,+Surabaya,+Jawa+Timur+60255',
+                hasMap:
+                  'https://maps.google.com/?q=Blok+C,+Plaza+Segi+8+No.819,+Sonokwijenan,+Kec.+Sukomanunggal,+Surabaya,+Jawa+Timur+60255',
                 areaServed: [
                   { '@type': 'City', name: 'Surabaya' },
+                  { '@type': 'State', name: 'Jawa Timur' },
                   { '@type': 'Country', name: 'Indonesia' },
                 ],
                 availableLanguage: ['Indonesian', 'English'],
