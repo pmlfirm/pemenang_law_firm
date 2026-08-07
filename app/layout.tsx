@@ -3,9 +3,9 @@ import { LanguageProvider } from '@/components/language-context'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Pemenang Mandiri Law Firm & Partners | Firma Hukum Terpercaya',
+  title: 'Pemenang Mandiri Lawfirm & Partners | Firma Hukum Terpercaya Surabaya',
   description:
-    'Pemenang Mandiri Law Firm & Partners menyediakan layanan hukum profesional untuk hukum pidana, perdata, dan pendampingan hukum terkait klaim asuransi.',
+    'Pemenang Mandiri Lawfirm & Partners di Blok C, Plaza Segi 8 No.819, Sonokwijenan, Kec. Sukomanunggal, Surabaya menyediakan layanan hukum profesional untuk hukum pidana, perdata, dan pendampingan hukum klaim asuransi.',
   keywords: [
     'law firm',
     'firma hukum',
@@ -16,19 +16,25 @@ export const metadata: Metadata = {
     'hukum pidana',
     'hukum perdata',
     'klaim asuransi',
+    'Pemenang Mandiri Lawfirm & Partners',
     'Pemenang Mandiri',
     'Surabaya',
+    'Plaza Segi 8',
+    'Sonokwijenan',
+    'Sukomanunggal',
+    'Surabaya Barat',
+    'Jawa Timur',
   ],
   robots: { index: true, follow: true },
-  authors: [{ name: 'Pemenang Mandiri Law Firm & Partners' }],
-  creator: 'Pemenang Mandiri Law Firm & Partners',
-  publisher: 'Pemenang Mandiri Law Firm & Partners',
+  authors: [{ name: 'Pemenang Mandiri Lawfirm & Partners' }],
+  creator: 'Pemenang Mandiri Lawfirm & Partners',
+  publisher: 'Pemenang Mandiri Lawfirm & Partners',
   openGraph: {
-    title: 'Pemenang Mandiri Law Firm & Partners',
+    title: 'Pemenang Mandiri Lawfirm & Partners',
     description:
-      'Professional legal services for criminal and civil matters, and insurance claim legal support.',
+      'Professional legal services for criminal, civil matters, and insurance claim legal support in Surabaya.',
     url: 'https://pemenangmandirilawfirm.vercel.app',
-    siteName: 'Pemenang Mandiri Law Firm & Partners',
+    siteName: 'Pemenang Mandiri Lawfirm & Partners',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -36,15 +42,15 @@ export const metadata: Metadata = {
         url: '/logo-pml-transparent.png',
         width: 590,
         height: 1000,
-        alt: 'Logo Pemenang Mandiri Law Firm',
+        alt: 'Logo Pemenang Mandiri Lawfirm & Partners',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pemenang Mandiri Law Firm & Partners',
+    title: 'Pemenang Mandiri Lawfirm & Partners',
     description:
-      'Professional legal services for criminal and civil matters, and insurance claim legal support.',
+      'Professional legal services for criminal, civil matters, and insurance claim legal support in Surabaya.',
     images: ['/logo-pml-transparent.png'],
   },
   icons: {
@@ -73,7 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans antialiased">
         <LanguageProvider>{children}</LanguageProvider>
 
-        {/* ── JSON-LD Structured Data ── */}
+        {/* ── JSON-LD Structured Data for Local SEO ── */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -81,24 +87,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {
                 '@context': 'https://schema.org',
                 '@type': 'LegalService',
-                name: 'Pemenang Mandiri Law Firm & Partners',
+                name: 'Pemenang Mandiri Lawfirm & Partners',
                 url: 'https://pemenangmandirilawfirm.vercel.app',
                 logo: 'https://pemenangmandirilawfirm.vercel.app/logo-pml-transparent.png',
+                image: 'https://pemenangmandirilawfirm.vercel.app/logo-pml-transparent.png',
                 description:
-                  'Professional legal services for criminal and civil matters, and insurance claim legal support.',
+                  'Pemenang Mandiri Lawfirm & Partners menyediakan layanan hukum profesional untuk hukum pidana, perdata, dan pendampingan hukum terkait klaim asuransi di Surabaya.',
                 telephone: '+62 896-3871-4065',
+                priceRange: '$$',
                 address: {
                   '@type': 'PostalAddress',
-                  addressLocality: 'Surabaya',
+                  streetAddress: 'Blok C, Plaza Segi 8 No.819',
+                  addressSublocality: 'Sonokwijenan',
+                  addressLocality: 'Sukomanunggal, Surabaya',
+                  addressRegion: 'Jawa Timur',
+                  postalCode: '60255',
                   addressCountry: 'ID',
                 },
-                areaServed: { '@type': 'Country', name: 'Indonesia' },
+                hasMap: 'https://maps.google.com/?q=Blok+C,+Plaza+Segi+8+No.819,+Sonokwijenan,+Kec.+Sukomanunggal,+Surabaya,+Jawa+Timur+60255',
+                areaServed: [
+                  { '@type': 'City', name: 'Surabaya' },
+                  { '@type': 'Country', name: 'Indonesia' },
+                ],
                 availableLanguage: ['Indonesian', 'English'],
               },
               {
                 '@context': 'https://schema.org',
                 '@type': 'WebSite',
-                name: 'Pemenang Mandiri Law Firm & Partners',
+                name: 'Pemenang Mandiri Lawfirm & Partners',
                 url: 'https://pemenangmandirilawfirm.vercel.app',
                 inLanguage: ['en', 'id'],
               },

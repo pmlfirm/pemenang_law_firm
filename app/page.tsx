@@ -6,7 +6,9 @@ import {
   ArrowRight,
   BriefcaseBusiness,
   CircleCheck,
+  ExternalLink,
   Landmark,
+  MapPin,
 } from 'lucide-react'
 import Navigation from '@/components/navigation'
 import Footer from '@/components/footer'
@@ -221,7 +223,33 @@ export default function HomePage() {
               <p className="mt-4 max-w-lg text-sm leading-7 text-white/66 sm:text-[15px]">
                 {t.contactDescription}
               </p>
-              <div className="mt-8">
+
+              {/* Office Address Card */}
+              <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-5 backdrop-blur-sm space-y-2">
+                <div className="flex items-center gap-2 text-[#D4AF37] font-bold text-xs uppercase tracking-wider">
+                  <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <span>{t.officeAddressLabel}</span>
+                </div>
+                <p className="text-sm font-semibold text-white/90 leading-relaxed">
+                  {lawFirmConfig.name}
+                </p>
+                <p className="text-xs text-white/70 leading-relaxed">
+                  {t.officeAddressValue}
+                </p>
+                <div className="pt-1">
+                  <a
+                    href={lawFirmConfig.address.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#D4AF37] hover:underline"
+                  >
+                    <span>{t.openMapsLabel}</span>
+                    <ExternalLink className="h-3 w-3 shrink-0" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="mt-6">
                 <a
                   href={waHref}
                   target="_blank"
