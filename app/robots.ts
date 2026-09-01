@@ -1,11 +1,15 @@
 import type { MetadataRoute } from 'next'
+import { siteConfig, siteRoutes } from '@/lib/site-data'
+
+export const dynamic = 'force-static'
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
-      allow: '/',
+      allow: siteRoutes.home,
+      disallow: ['/api/'],
     },
-    sitemap: 'https://pemenangmandirilawfirm.vercel.app/sitemap.xml',
+    sitemap: `${siteConfig.url}${siteRoutes.sitemap}`,
   }
 }

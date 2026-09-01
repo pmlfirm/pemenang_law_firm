@@ -1,27 +1,292 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
-  --background: #0f172a;
-  --foreground: #f5efe1;
-  --muted: #a8a29e;
-  --gold: #d4af37;
-  --gold-soft: rgba(212, 175, 55, 0.18);
+  --font-geist-sans: 'Inter', 'Segoe UI', Arial, sans-serif;
+  --font-geist-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --background: #F8F5EF;
+  --foreground: #1F2933;
+  --card: #FFFFFF;
+  --card-foreground: #1F2933;
+  --popover: #FFFFFF;
+  --popover-foreground: #1F2933;
+  --primary: #0B1F3A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #0A2540;
+  --secondary-foreground: #FFFFFF;
+  --muted: #EFE9DF;
+  --muted-foreground: #6B7280;
+  --accent: #D4AF37;
+  --accent-foreground: #07111F;
+  --destructive: #DC2626;
+  --destructive-foreground: #FEF2F2;
+  --border: #E6DFD3;
+  --input: #FFFFFF;
+  --ring: #D4AF37;
+  --chart-1: #0B1F3A;
+  --chart-2: #0A2540;
+  --chart-3: #D4AF37;
+  --chart-4: #3A5A78;
+  --chart-5: #E6DFD3;
+  --radius: 0.5rem;
+  --sidebar: #F8F5EF;
+  --sidebar-foreground: #1F2933;
+  --sidebar-primary: #0B1F3A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #D4AF37;
+  --sidebar-accent-foreground: #07111F;
+  --sidebar-border: #E6DFD3;
+  --sidebar-ring: #D4AF37;
 }
 
-html {
-  scroll-behavior: smooth;
+.dark {
+  --background: #07111F;
+  --foreground: #F8F5EF;
+  --card: #0B1F3A;
+  --card-foreground: #F8F5EF;
+  --popover: #0B1F3A;
+  --popover-foreground: #F8F5EF;
+  --primary: #D4AF37;
+  --primary-foreground: #07111F;
+  --secondary: #0A2540;
+  --secondary-foreground: #F8F5EF;
+  --muted: #1F2933;
+  --muted-foreground: #D1D5DB;
+  --accent: #D4AF37;
+  --accent-foreground: #07111F;
+  --destructive: #EF4444;
+  --destructive-foreground: #FEE2E2;
+  --border: #3A5A78;
+  --input: #07111F;
+  --ring: #D4AF37;
+  --chart-1: #D4AF37;
+  --chart-2: #3A5A78;
+  --chart-3: #F8F5EF;
+  --chart-4: #D1D5DB;
+  --chart-5: #0A2540;
+  --sidebar: #0B1F3A;
+  --sidebar-foreground: #F8F5EF;
+  --sidebar-primary: #D4AF37;
+  --sidebar-primary-foreground: #07111F;
+  --sidebar-accent: #0A2540;
+  --sidebar-accent-foreground: #F8F5EF;
+  --sidebar-border: #3A5A78;
+  --sidebar-ring: #D4AF37;
 }
 
-body {
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes ping-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  80%,
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.75s ease both;
+}
+
+/* Hero heading text shadow for video readability */
+.hero-heading {
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.animate-slide-down {
+  animation: slide-down 0.22s ease both;
+}
+
+.animate-float {
+  animation: float-soft 6s ease-in-out infinite;
+}
+
+.animate-ping-slow {
+  animation: ping-slow 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+
+.ai-chat-panel {
+  height: min(620px, calc(100vh - 7.5rem));
+  height: min(620px, calc(100dvh - 7.5rem));
+}
+
+.page-transition {
+  animation: page-fade 0.36s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #B8941F;
+}
+
+.section-kicker::before {
+  content: '';
+  width: 2rem;
+  height: 2px;
+  border-radius: 999px;
+  background: #D4AF37;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Infinite Marquee Carousel Animation */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-scroll {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 55s linear infinite;
+}
+
+.animate-marquee-scroll:hover {
+  animation-play-state: paused;
+}
+
+
+/* ------------------------------------------------------------------ */
+/*  PML (/pml) — Pemenang Mandiri Lawfirm & Partners                   */
+/*  Prefixed so the main insurance styles above stay untouched.        */
+/* ------------------------------------------------------------------ */
+
+.pml-shell {
   background:
     radial-gradient(circle at top, rgba(212, 175, 55, 0.08), transparent 28%),
     linear-gradient(180deg, #0f172a 0%, #111827 45%, #1f2937 100%);
-  color: var(--foreground);
-  font-family: Inter, 'Segoe UI', Arial, sans-serif;
 }
 
-/* ── Reusable section kicker ── */
-.section-kicker {
+.pml-kicker {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
@@ -32,8 +297,8 @@ body {
   text-transform: uppercase;
 }
 
-.section-kicker::before,
-.section-kicker::after {
+.pml-kicker::before,
+.pml-kicker::after {
   content: '';
   display: block;
   width: 2.25rem;
@@ -41,82 +306,21 @@ body {
   background: rgba(212, 175, 55, 0.6);
 }
 
-/* ── Hero panel ── */
-.hero-panel {
-  background:
-    linear-gradient(135deg, rgba(15,23,42,.88) 0%, rgba(17,24,39,.82) 55%, rgba(31,41,55,.75) 100%), radial-gradient(circle at top right, rgba(212,175,55,.16), transparent 35%), linear-gradient(120deg,#1e293b 0%, #111827 55%, #0f172a 100%);
-}
-
-/* ── Gold-bordered cards ── */
-.gold-card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.015) 100%);
+.pml-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.015) 100%);
   border: 1px solid rgba(212, 175, 55, 0.2);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
 }
 
-.gold-outline {
-  border: 1px solid rgba(212, 175, 55, 0.24);
-}
-
-.text-muted {
-  color: rgba(245, 239, 225, 0.72);
-}
-
-/* ── WhatsApp pulse animation ── */
-@keyframes wa-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
-  }
-  70% {
-    box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-  }
-}
-
-.wa-float {
-  animation: wa-pulse 2s ease-in-out infinite;
-}
-
-.wa-float:hover {
-  animation: none;
-  transform: translateY(-2px) scale(1.1);
-  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.35);
-}
-
-/* ── Hero fade-up animation ── */
-@keyframes fade-up {
+@keyframes pml-fade-in {
   from {
     opacity: 0;
-    transform: translateY(18px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-.animate-fade-up {
-  animation: fade-up 0.7s ease-out both;
-}
-
-/* ── Hero slide cross-fade ── */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.slide-fade-in {
-  animation: fade-in 0.8s ease-out both;
-}
-
-/* ── WhatsApp bounce (subtle) ── */
-@keyframes wa-bounce {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
-}
-
-.wa-bounce {
-  animation: wa-bounce 2.5s ease-in-out infinite;
+.pml-slide-fade-in {
+  animation: pml-fade-in 0.8s ease-out both;
 }

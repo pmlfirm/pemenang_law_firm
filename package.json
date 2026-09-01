@@ -1,11 +1,12 @@
 {
-  "name": "pemenang-mandiri-law-firm-website",
+  "name": "pemenang-konsultan-website",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "typecheck": "next typegen && tsc --noEmit --pretty false",
     "build": "next build",
+    "build:static": "node build-static.cjs",
     "verify": "pnpm typecheck && pnpm build",
     "start": "next start"
   },

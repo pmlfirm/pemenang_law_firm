@@ -1,0 +1,15 @@
+node_modules/
+.next/
+.vercel/
+*.log
+.DS_Store
+tsconfig.tsbuildinfo
+
+.env*
+!.env.example
+
+package-lock.json
+yarn.lock
+yarn.lockb
+bun.lock
+bun.lockb

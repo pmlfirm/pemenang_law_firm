@@ -1,0 +1,146 @@
+# Apache / Hostinger Configuration for PT Pemenang Konsultan Next.js Static Export
+# Security-Hardened Configuration — Updated 2026-07-25
+
+# ═══════════════════════════════════════════════════════════════
+#  SECTION 1: SECURITY — Block Sensitive Files & Directories
+# ═══════════════════════════════════════════════════════════════
+
+# Prevent directory listing (don't show folder contents)
+Options -Indexes
+
+# Block access to hidden files and directories (.env, .git, .gitignore, etc.)
+<FilesMatch "^\.">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Block access to sensitive config & build files
+<FilesMatch "(package\.json|package-lock\.json|tsconfig\.json|next\.config\.(mjs|js|ts)|build-static\.cjs|pnpm-lock\.yaml|yarn\.lock|bun\.lock|\.env(\..*)?)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Allow .txt files (required for Next.js App Router static export data payloads and robots.txt)
+
+# Block access to source map files (.js.map, .css.map)
+<FilesMatch "\.map$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# ═══════════════════════════════════════════════════════════════
+#  SECTION 2: SECURITY HEADERS
+# ═══════════════════════════════════════════════════════════════
+
+<IfModule mod_headers.c>
+  # Prevent MIME-type sniffing
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Prevent clickjacking — only allow embedding from same origin
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # Enable XSS filtering in older browsers
+  Header always set X-XSS-Protection "1; mode=block"
+
+  # Control referrer information sent with requests
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Restrict browser features/APIs
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+
+  # Content Security Policy — allow Google Fonts, WhatsApp links, media files, and inline styles/scripts
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self' https://generativelanguage.googleapis.com https://wa.me; frame-ancestors 'self';"
+
+  # Remove server signature
+  Header always unset X-Powered-By
+  Header always unset Server
+</IfModule>
+
+# Remove server version from response
+ServerSignature Off
+
+# ═══════════════════════════════════════════════════════════════
+#  SECTION 4: ROUTING — Clean URLs & HTTPS Redirect
+# ═══════════════════════════════════════════════════════════════
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Force HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP_HOST} !^localhost [NC]
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # 301 Redirects for Old Site URLs to New Pages
+  RewriteRule ^marine-hull/?$ /products/marine-hull-insurance/ [R=301,L]
+  RewriteRule ^marine-cargo(-insurance)?/?$ /products/marine-cargo-insurance/ [R=301,L]
+  RewriteRule ^(property-fire|fire-property|property|fire)-insurance/?$ /products/fire-property-insurance/ [R=301,L]
+  RewriteRule ^motor-vehicle(-insurance)?/?$ /products/motor-vehicle-insurance/ [R=301,L]
+  RewriteRule ^travel-insurance/?$ /products/travel-insurance/ [R=301,L]
+  RewriteRule ^liability-insurance/?$ /products/liability-insurance/ [R=301,L]
+  RewriteRule ^claim-assistance/?$ /products/claim-assistance/ [R=301,L]
+  RewriteRule ^(company-visions-missions|about-us|about)/?$ /company-profile/ [R=301,L]
+  RewriteRule ^partners/?$ /our-partner/ [R=301,L]
+  RewriteRule ^contact/?$ /contact-us/ [R=301,L]
+
+  # Redirect old PHP/WordPress paths (e.g. index.php/...) to clean routes
+  RewriteRule ^index\.php/(.*)$ /$1 [R=301,L]
+  RewriteRule ^index\.php$ / [R=301,L]
+
+  # Existing files and directories serve directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Prevent rewriting missing _next JS/CSS asset requests to HTML 404 page
+  RewriteCond %{REQUEST_URI} ^/_next/ [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^ - [R=404,L]
+
+  # Rewrite clean paths to /path/index.html if folder index exists
+  RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+  RewriteRule ^(.*)$ /$1/index.html [L]
+
+  # Rewrite clean paths to /path.html if .html file exists
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.*)$ /$1.html [L]
+
+  # Custom 404 Page Fallback
+  ErrorDocument 404 /404.html
+</IfModule>
+
+# ═══════════════════════════════════════════════════════════════
+#  SECTION 5: PERFORMANCE — Caching & Compression
+# ═══════════════════════════════════════════════════════════════
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+</IfModule>

@@ -1,5 +1,19 @@
 {
   "framework": "nextjs",
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm build"
+  "buildCommand": "pnpm build",
+  "headers": [
+    {
+      "source": "/(.*)\\.(webp|png|jpg|jpeg|svg|ico|avif)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/_next/static/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
 }
