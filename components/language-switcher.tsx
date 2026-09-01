@@ -62,7 +62,7 @@ export default function LanguageSwitcher({ mobile = false }: LanguageSwitcherPro
         aria-label="Switch language to English"
       >
         <EnglandFlag />
-        <span>EN</span>
+        <span className={mobile ? '' : 'hidden sm:inline'}>EN</span>
       </button>
       <button
         type="button"
@@ -72,7 +72,7 @@ export default function LanguageSwitcher({ mobile = false }: LanguageSwitcherPro
         aria-label="Switch language to Indonesian"
       >
         <IndonesiaFlag />
-        <span>ID</span>
+        <span className={mobile ? '' : 'hidden sm:inline'}>ID</span>
       </button>
     </div>
   )

@@ -75,29 +75,8 @@ export default function PmlPageContent() {
         {/* Content grid */}
         <div className="mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="max-w-3xl space-y-4 sm:space-y-5" key={activeSlide}>
-            {/* Brand line */}
-            <div className="pml-slide-fade-in flex items-center gap-3">
-              <Image
-                src={pmlConfig.logo}
-                alt={`Logo ${pmlConfig.name}`}
-                width={44}
-                height={74}
-                className="h-11 w-auto shrink-0 object-contain brightness-0 invert drop-shadow-[0_0_12px_rgba(212,175,55,0.35)]"
-                priority
-              />
-              <div className="leading-tight">
-                <p className="text-sm font-black uppercase tracking-[0.18em] text-white sm:text-base">
-                  {pmlConfig.shortName}
-                </p>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#D4AF37]">{t.navSubtitle}</p>
-              </div>
-            </div>
-
             {/* Kicker badge */}
-            <div
-              className="pml-slide-fade-in inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-[0.02em] text-white/82 shadow-lg shadow-black/10 backdrop-blur sm:px-4 sm:py-2 sm:text-sm"
-              style={{ animationDelay: '60ms' }}
-            >
+            <div className="pml-slide-fade-in inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-[0.02em] text-white/82 shadow-lg shadow-black/10 backdrop-blur sm:px-4 sm:py-2 sm:text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4 text-[#D4AF37]"

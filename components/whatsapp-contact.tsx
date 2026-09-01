@@ -6,7 +6,6 @@ import { createPortal } from 'react-dom'
 import { ArrowUpRight, MessageCircle, ShieldCheck, X } from 'lucide-react'
 import {
   contactById,
-  contactDirectory,
   getContactWhatsappHref,
   type Contact,
   type ContactId,
@@ -178,79 +177,6 @@ export function WhatsappContactButton({ contactId, className = '' }: WhatsappCon
         </span>
         <ArrowUpRight className="h-4 w-4 shrink-0 text-[#1DA851]" />
       </button>
-
-      <WhatsappConfirmation contact={selectedContact} onClose={() => setSelectedContact(null)} />
-    </>
-  )
-}
-
-type WhatsappContactListProps = {
-  className?: string
-  variant?: 'card' | 'plain'
-}
-
-export function WhatsappContactList({
-  className = '',
-  variant = 'card',
-}: WhatsappContactListProps) {
-  const { language } = useLanguage()
-  const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
-  const isCard = variant === 'card'
-
-  return (
-    <>
-      <section
-        aria-label={pickLanguage(language, { en: 'WhatsApp Contact list', id: 'Daftar WhatsApp Contact' })}
-        className={`${
-          isCard
-            ? 'rounded-[1.4rem] border border-[#0B1F3A]/10 bg-white p-3 shadow-sm'
-            : 'bg-transparent'
-        } ${className}`}
-      >
-        <div className={`flex items-center gap-3 ${isCard ? 'mb-3 px-1' : 'mb-4'}`}>
-          <div className="flex h-10 w-12 shrink-0 items-center justify-center rounded-xl bg-[#25D366] text-[#07111F] shadow-sm shadow-[#25D366]/20">
-            <MessageCircle className="h-5 w-5" />
-          </div>
-          <div className="min-w-0">
-            <h3 className="text-xs font-black text-[#0B1F3A]">WhatsApp Contact</h3>
-            <p className="mt-0.5 text-[10px] leading-4 text-[#0B1F3A]/52">
-              {pickLanguage(language, { en: 'Choose the team that matches your needs.', id: 'Pilih tim yang sesuai dengan kebutuhan Anda.' })}
-            </p>
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          {contactDirectory.map((contact) => (
-            <button
-              key={contact.id}
-              type="button"
-              onClick={() => setSelectedContact(contact)}
-              aria-label={`WhatsApp ${contact.title} ${contact.whatsapp.displayNumber}`}
-              className="group flex w-full items-center gap-3 rounded-2xl border border-[#0B1F3A]/8 bg-white px-3 py-2.5 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#25D366]/42 hover:shadow-md"
-            >
-              <span className="relative h-10 w-12 shrink-0 overflow-hidden rounded-xl bg-[#0B1F3A]/6">
-                <Image
-                  src={contact.image}
-                  alt=""
-                  fill
-                  sizes="48px"
-                  className={`object-cover ${contact.imagePosition}`}
-                />
-                <span className={`absolute inset-0 opacity-45 ${contact.theme.mediaOverlay}`} />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block truncate text-xs font-black text-[#0B1F3A]">{contact.title}</span>
-                <span className="mt-0.5 block text-[11px] font-bold text-[#0B1F3A]/58">
-                  {contact.whatsapp.displayNumber}
-                </span>
-              </span>
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#25D366]/13 text-[#1DA851] transition-colors group-hover:bg-[#25D366] group-hover:text-[#07111F]">
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </span>
-            </button>
-          ))}
-        </div>
-      </section>
 
       <WhatsappConfirmation contact={selectedContact} onClose={() => setSelectedContact(null)} />
     </>

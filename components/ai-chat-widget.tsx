@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent,
 import { usePathname } from 'next/navigation'
 import {
   Bot,
-  ChevronDown,
   ChevronLeft,
   LoaderCircle,
   MessageCircle,
@@ -13,8 +12,7 @@ import {
   Sparkles,
   X,
 } from 'lucide-react'
-import { siteRoutes } from '@/lib/site-data'
-import { WhatsappContactList } from '@/components/whatsapp-contact'
+import { contactById, getContactWhatsappHref, siteRoutes } from '@/lib/site-data'
 import { pickLanguage, useLanguage } from '@/lib/language'
 import { resolveLocalAssistantReply, resolveOfflineAssistantReply } from '@/lib/ai-assistant'
 
@@ -26,7 +24,7 @@ type ChatMessage = {
   handoff?: boolean
 }
 
-type ActivePanel = 'ai' | 'whatsapp' | null
+type ActivePanel = 'ai' | null
 
 const VISITOR_ID_KEY = 'pemenang-ai-visitor-id'
 
@@ -123,12 +121,14 @@ export default function AiChatWidget() {
     [language],
   )
 
+  /* Single official WhatsApp destination: PML Law Firm. */
+  const waHref = getContactWhatsappHref(contactById['pml-law-firm'], language)
+
   const [activePanel, setActivePanel] = useState<ActivePanel>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([initialMessage])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [showContacts, setShowContacts] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const widgetRef = useRef<HTMLDivElement>(null)
@@ -162,13 +162,11 @@ export default function AiChatWidget() {
   useEffect(() => {
     setMessages([initialMessage])
     setInput('')
-    setShowContacts(false)
   }, [initialMessage])
 
   useEffect(() => {
     setActivePanel(null)
     setIsMenuOpen(false)
-    setShowContacts(false)
   }, [pathname])
 
   useEffect(() => {
@@ -179,7 +177,7 @@ export default function AiChatWidget() {
     })
 
     return () => cancelAnimationFrame(frame)
-  }, [activePanel, messages, isLoading, showContacts])
+  }, [activePanel, messages, isLoading])
 
   useEffect(() => {
     if (activePanel !== 'ai') return
@@ -203,7 +201,6 @@ export default function AiChatWidget() {
     if (isLoading) return
     setMessages([initialMessage])
     setInput('')
-    setShowContacts(false)
   }
 
   const returnToMenu = () => {
@@ -392,28 +389,19 @@ export default function AiChatWidget() {
                   >
                     <MessageText content={message.content} />
                     {message.role === 'assistant' && message.handoff && (
-                      <button
-                        type="button"
-                        onClick={() => setShowContacts((current) => !current)}
-                        aria-expanded={showContacts}
-                        aria-controls="ai-whatsapp-contact-list"
-                        className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#0B1F3A] px-4 py-2 text-xs font-black text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#12345B]"
+                      <a
+                        href={waHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2 text-xs font-black text-[#08110d] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#3CE076]"
                       >
-                        {pickLanguage(language, { en: 'Choose WhatsApp Contact', id: 'Pilih WhatsApp Contact' })}
-                        <ChevronDown
-                          className={`h-3.5 w-3.5 transition-transform duration-200 ${showContacts ? 'rotate-180' : ''}`}
-                        />
-                      </button>
+                        <MessageCircle className="h-3.5 w-3.5" />
+                        {pickLanguage(language, { en: 'Chat on WhatsApp', id: 'Chat via WhatsApp' })}
+                      </a>
                     )}
                   </div>
                 </div>
               ))}
-
-              {showContacts && (
-                <div id="ai-whatsapp-contact-list" className="animate-fade-up pt-1">
-                  <WhatsappContactList />
-                </div>
-              )}
 
               {messages.length === 1 && (
                 <div className="space-y-2 pt-1">
@@ -475,50 +463,6 @@ export default function AiChatWidget() {
         </div>
       )}
 
-      {activePanel === 'whatsapp' && (
-        <div
-          role="dialog"
-          aria-label={pickLanguage(language, { en: 'Pemenang WhatsApp Contact list', id: 'Daftar WhatsApp Contact Pemenang' })}
-          aria-modal="false"
-          className="absolute bottom-[4.75rem] right-0 flex max-h-[min(650px,calc(100dvh-7rem))] w-[min(390px,calc(100vw-2rem))] origin-bottom-right flex-col overflow-hidden rounded-[1.75rem] border border-[#0B1F3A]/12 bg-white shadow-2xl shadow-[#07111F]/25 ring-1 ring-white/70 animate-fade-up"
-        >
-          <div className="relative overflow-hidden bg-[#07111F] px-3 py-4 text-white sm:px-4">
-            <div className="absolute -right-10 -top-16 h-36 w-36 rounded-full bg-[#25D366]/18 blur-2xl" />
-            <div className="relative flex items-center gap-2 sm:gap-3">
-              <button
-                type="button"
-                onClick={returnToMenu}
-                aria-label={pickLanguage(language, { en: 'Back to assistance options', id: 'Kembali ke pilihan bantuan' })}
-                className="rounded-full p-2 text-white/65 transition-colors hover:bg-white/10 hover:text-white"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#25D366] text-[#07111F] shadow-lg shadow-black/20 sm:h-11 sm:w-11">
-                <MessageCircle className="h-5 w-5" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h2 className="truncate text-sm font-black">WhatsApp Contact</h2>
-                <p className="mt-1 truncate text-[11px] font-semibold text-white/58">
-                  {pickLanguage(language, { en: 'Official contacts by product category', id: 'Kontak resmi per kategori produk' })}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={closeWidget}
-                aria-label={pickLanguage(language, { en: 'Close WhatsApp list', id: 'Tutup daftar WhatsApp' })}
-                className="rounded-full p-2 text-white/65 transition-colors hover:bg-white/10 hover:text-white"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-
-          <div className="min-h-0 flex-1 overflow-y-auto bg-[#F8F5EF] p-3 sm:p-4">
-            <WhatsappContactList variant="plain" />
-          </div>
-        </div>
-      )}
-
       <div
         aria-hidden={!isMenuOpen}
         className={`absolute bottom-[4.8rem] right-0 flex flex-col items-end gap-3 transition-all duration-300 ${
@@ -542,12 +486,14 @@ export default function AiChatWidget() {
           </span>
         </button>
 
-        <button
-          type="button"
-          onClick={() => openPanel('whatsapp')}
+        <a
+          href={waHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={closeWidget}
           tabIndex={isMenuOpen ? 0 : -1}
           className="group flex touch-manipulation items-center gap-2.5"
-          aria-label={pickLanguage(language, { en: 'Open WhatsApp Contact list', id: 'Buka daftar WhatsApp Contact' })}
+          aria-label={pickLanguage(language, { en: 'Chat with PML Law Firm on WhatsApp', id: 'Chat dengan PML Law Firm via WhatsApp' })}
         >
           <span className="rounded-full bg-white px-3 py-2 text-xs font-black text-[#0B1F3A] shadow-lg ring-1 ring-[#0B1F3A]/8 transition-transform group-hover:-translate-x-0.5">
             WhatsApp Contact
@@ -555,7 +501,7 @@ export default function AiChatWidget() {
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-[#07111F] shadow-xl ring-2 ring-white transition-transform group-hover:-translate-y-0.5 sm:h-14 sm:w-14">
             <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
           </span>
-        </button>
+        </a>
       </div>
 
       <button

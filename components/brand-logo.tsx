@@ -24,8 +24,8 @@ export default function BrandLogo({
 }: BrandLogoProps) {
   const { language } = useLanguage()
   const subtitle = pickLanguage(language, {
-    en: 'Insurance Consultant',
-    id: 'Konsultan Asuransi',
+    en: 'Law Firm & Partners',
+    id: 'Firma Hukum & Rekan',
   })
 
   return (
@@ -50,7 +50,10 @@ export default function BrandLogo({
 
       {withText && (
         <div className="min-w-0 leading-tight">
-          <p className="text-xs font-extrabold tracking-wide sm:text-sm lg:text-lg">{siteConfig.name}</p>
+          <p className="text-xs font-extrabold tracking-wide sm:text-sm lg:text-lg">
+            <span className="sm:hidden">{siteConfig.shortName}</span>
+            <span className="hidden sm:inline">{siteConfig.name}</span>
+          </p>
           <p className="text-[8px] uppercase tracking-[0.16em] text-white/55 sm:text-[10px] sm:tracking-[0.24em]">{subtitle}</p>
         </div>
       )}
