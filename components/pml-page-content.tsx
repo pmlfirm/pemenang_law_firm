@@ -1,8 +1,7 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { ArrowRight, BriefcaseBusiness, CircleCheck, ExternalLink, Landmark, MapPin } from 'lucide-react'
+import { BriefcaseBusiness, CircleCheck, ExternalLink, Landmark, MapPin } from 'lucide-react'
 import { pmlConfig, pmlCopy } from '@/lib/pml-content'
 import { contactById, getContactWhatsappHref } from '@/lib/site-data'
 import { useLanguage } from '@/lib/language'
@@ -23,134 +22,11 @@ export default function PmlPageContent() {
   const { language } = useLanguage()
   const t = pmlCopy[language]
 
-  /* ── Hero slider state ── */
-  const [activeSlide, setActiveSlide] = useState(0)
-  const slideCount = pmlConfig.heroImages.length
-
-  /* Same number and starter message as the PML entry in the WhatsApp Contact list */
+  /* Same number and starter message as the PML WhatsApp contact */
   const waHref = getContactWhatsappHref(contactById['pml-law-firm'], language)
-
-  const nextSlide = useCallback(() => {
-    setActiveSlide((prev) => (prev + 1) % slideCount)
-  }, [slideCount])
-
-  useEffect(() => {
-    const interval = setInterval(nextSlide, 6000)
-    return () => clearInterval(interval)
-  }, [nextSlide])
 
   return (
     <div className="pml-shell text-white">
-      {/* ═══════════════════════════════════════════
-          HERO — Full-width auto-sliding banner
-      ═══════════════════════════════════════════ */}
-      <section
-        id="pml-home"
-        className="relative isolate min-h-[calc(100vh-4rem)] overflow-hidden bg-[#0f172a] px-4 py-14 text-white sm:px-6 lg:px-8 lg:py-20"
-      >
-        {/* Background gradient base */}
-        <div className="absolute inset-0 -z-30 bg-[linear-gradient(135deg,#0f172a_0%,#1e293b_54%,#111827_100%)]" />
-
-        {/* Sliding background images */}
-        <div className="absolute right-0 top-0 -z-20 h-full w-full lg:w-[56%]">
-          {pmlConfig.heroImages.map((src, i) => (
-            <Image
-              key={src}
-              src={src}
-              alt={t.heroSlides[i]?.kicker ?? 'Hero background'}
-              fill
-              className={`object-cover object-center transition-opacity duration-700 ${
-                activeSlide === i ? 'opacity-60 lg:opacity-95' : 'opacity-0'
-              }`}
-              sizes="(max-width: 1024px) 100vw, 56vw"
-              priority={i === 0}
-            />
-          ))}
-        </div>
-
-        {/* Left gradient overlay for text readability */}
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,23,42,0.98)_0%,rgba(15,23,42,0.94)_44%,rgba(15,23,42,0.7)_68%,rgba(15,23,42,0.28)_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 -z-10 h-36 bg-gradient-to-t from-[#0f172a] to-transparent" />
-
-        {/* Content grid */}
-        <div className="mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="max-w-3xl space-y-4 sm:space-y-5" key={activeSlide}>
-            {/* Kicker badge */}
-            <div className="pml-slide-fade-in inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-[0.02em] text-white/82 shadow-lg shadow-black/10 backdrop-blur sm:px-4 sm:py-2 sm:text-sm">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-[#D4AF37]"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
-                <path d="m9 12 2 2 4-4" />
-              </svg>
-              {t.heroSlides[activeSlide].kicker}
-            </div>
-
-            {/* Title + description */}
-            <div className="space-y-3 sm:space-y-3.5">
-              <h1
-                className="pml-slide-fade-in max-w-3xl text-balance text-3xl font-black leading-[1.1] tracking-tight sm:text-4xl sm:leading-[1.08] lg:text-5xl"
-                style={{ animationDelay: '100ms' }}
-              >
-                {t.heroSlides[activeSlide].title}
-              </h1>
-              <p
-                className="pml-slide-fade-in max-w-2xl text-pretty text-sm leading-7 text-white/76 sm:text-[15px] sm:leading-8 lg:text-base"
-                style={{ animationDelay: '200ms' }}
-              >
-                {t.heroSlides[activeSlide].description}
-              </p>
-            </div>
-
-            {/* CTAs */}
-            <div
-              className="pml-slide-fade-in grid max-w-md grid-cols-2 gap-3 pt-1 sm:flex sm:max-w-none sm:flex-row"
-              style={{ animationDelay: '300ms' }}
-            >
-              <a
-                href="#pml-practice-areas"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#D4AF37] px-4 py-3 text-sm font-bold text-[#07111F] shadow-lg shadow-[#D4AF37]/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E0C878] sm:px-5"
-              >
-                {t.heroCta1}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </a>
-              <a
-                href="#pml-contact"
-                className="inline-flex items-center justify-center rounded-full border border-white/22 bg-white/8 px-4 py-3 text-sm font-bold text-white backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/14 sm:px-5"
-              >
-                {t.heroCta2}
-              </a>
-            </div>
-
-            {/* Slide indicators */}
-            <div className="flex gap-2 pt-4">
-              {pmlConfig.heroImages.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    activeSlide === i ? 'w-8 bg-[#D4AF37]' : 'w-3 bg-white/25 hover:bg-white/40'
-                  }`}
-                  onClick={() => setActiveSlide(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Right spacer for image visibility */}
-          <div className="hidden lg:block" />
-        </div>
-      </section>
-
       {/* ═══════════════════════════════════════════
           PRACTICE AREAS
       ═══════════════════════════════════════════ */}

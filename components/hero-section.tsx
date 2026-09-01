@@ -1,14 +1,14 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
 import { ArrowRight, Shield } from 'lucide-react'
 
-import { pickLanguage, useLanguage } from '@/lib/language'
-import { siteRoutes } from '@/lib/site-data'
+import { pmlCopy } from '@/lib/pml-content'
+import { useLanguage } from '@/lib/language'
 
 export default function HeroSection() {
   const { language } = useLanguage()
+  const t = pmlCopy[language]
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
 
@@ -73,43 +73,34 @@ export default function HeroSection() {
             {/* Eyebrow Badge */}
             <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs font-semibold tracking-[0.04em] text-white/80 shadow-lg shadow-black/10 backdrop-blur-sm sm:text-sm">
               <Shield className="h-4 w-4 text-[#D4AF37]" />
-              {pickLanguage(language, {
-                en: 'Trusted Insurance Consulting Partner',
-                id: 'Partner Konsultasi Asuransi Terpercaya',
-              })}
+              {t.heroSlides[0].kicker}
             </div>
 
             {/* Main Heading */}
             <h1 className="hero-heading text-balance text-[2.5rem] font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[3.5rem] xl:text-6xl">
-              {pickLanguage(language, {
-                en: 'Your Trusted Insurance Solution',
-                id: 'Solusi Asuransi Terpercaya Anda',
-              })}
+              {t.heroSlides[0].title}
             </h1>
 
             {/* Description */}
             <p className="max-w-xl text-pretty text-base leading-7 text-white/75 sm:text-[17px] sm:leading-8 lg:text-lg lg:leading-8">
-              {pickLanguage(language, {
-                en: 'Pemenang Mandiri Law Firm helps you choose the best insurance with a personal and professional approach.',
-                id: 'Pemenang Mandiri Law Firm membantu Anda memilih asuransi terbaik dengan pendekatan yang personal dan profesional.',
-              })}
+              {t.heroSlides[0].description}
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:gap-4">
-              <Link
-                href={siteRoutes.products}
+              <a
+                href="#pml-practice-areas"
                 className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#D4AF37] px-6 py-3.5 text-sm font-bold text-[#07111F] shadow-lg shadow-[#D4AF37]/25 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E0C878] hover:shadow-xl hover:shadow-[#D4AF37]/30 sm:px-7 sm:text-[15px]"
               >
-                {pickLanguage(language, { en: 'View Products', id: 'Lihat Produk' })}
+                {t.heroCta1}
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-              </Link>
-              <Link
-                href={siteRoutes.contact}
+              </a>
+              <a
+                href="#pml-contact"
                 className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/8 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-white/35 hover:bg-white/14 sm:px-7 sm:text-[15px]"
               >
-                {pickLanguage(language, { en: 'Contact Us', id: 'Hubungi Kami' })}
-              </Link>
+                {t.heroCta2}
+              </a>
             </div>
           </div>
         </div>

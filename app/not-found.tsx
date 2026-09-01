@@ -14,14 +14,11 @@ export default function NotFound() {
         <p className="text-sm font-black uppercase tracking-[0.24em] text-[#B8941F]">404</p>
         <h1 className="mt-4 text-4xl font-black text-[#0B1F3A] sm:text-5xl">Page not found</h1>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-[#1F2933]/68 sm:text-base">
-          Halaman yang dicari tidak tersedia. Silakan kembali ke halaman utama atau buka product portfolio.
+          Halaman yang dicari tidak tersedia. Silakan kembali ke halaman utama.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href={siteRoutes.home} className="rounded-full bg-[#0B1F3A] px-5 py-3 text-sm font-black text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#102A46]">
             Back to Home
-          </Link>
-          <Link href={siteRoutes.products} className="rounded-full bg-[#D4AF37] px-5 py-3 text-sm font-black text-[#07111F] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E0C878]">
-            View Products
           </Link>
         </div>
       </div>

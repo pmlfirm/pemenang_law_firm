@@ -1,19 +1,16 @@
 import type { AppLanguage } from '@/lib/language-types'
-import { siteRoutes } from '@/lib/routes'
 
 /* ------------------------------------------------------------------ */
 /*  PML — Pemenang Mandiri Lawfirm & Partners                          */
-/*  Served from this same domain at /pml.                              */
 /* ------------------------------------------------------------------ */
 
 export const pmlConfig = {
   name: 'Pemenang Mandiri Lawfirm & Partners',
   shortName: 'Pemenang Mandiri',
-  path: siteRoutes.pml,
   logo: '/logo-pml-transparent.png',
   description: {
-    en: 'The law firm division handling criminal law, civil law, and legal support for insurance claim disputes.',
-    id: 'Divisi firma hukum yang menangani hukum pidana, hukum perdata, dan pendampingan hukum untuk sengketa klaim asuransi.',
+    en: 'A law firm handling criminal law, civil law, and legal dispute representation.',
+    id: 'Firma hukum yang menangani hukum pidana, hukum perdata, dan pendampingan sengketa hukum.',
   },
   address: {
     street: 'Blok C, Plaza Segi 8 No.819',
@@ -76,19 +73,13 @@ const en: PmlCopy = {
       kicker: 'Trusted Legal Services',
       title: 'Professional legal support with a calm, modern, and reliable approach.',
       description:
-        'Pemenang Mandiri Lawfirm & Partners assists individuals and businesses in criminal and civil matters, while also serving as a legal partner for resolving insurance claim-related issues.',
+        'Pemenang Mandiri Lawfirm & Partners assists individuals and businesses in criminal and civil matters, with a calm, modern, and reliable approach.',
     },
     {
       kicker: 'Expert Criminal & Civil Law',
       title: 'Experienced legal representation for criminal defense and civil disputes.',
       description:
         'Our team provides strategic guidance for investigation, prosecution, court proceedings, contract disputes, debt collection, and broader civil issues with practical direction.',
-    },
-    {
-      kicker: 'Insurance Claim Legal Support',
-      title: 'A dedicated legal partner for insurance claim-related issues.',
-      description:
-        'We support clients with practical legal insight, careful case review, and coordinated follow-up for claim disputes involving legal interpretation and business sensitivity.',
     },
   ],
   heroCta1: 'View Practice Areas',
@@ -114,16 +105,16 @@ const en: PmlCopy = {
   ],
 
   aboutKicker: 'About Us',
-  aboutHeading: 'A legal partner for insurance claim-related issues.',
+  aboutHeading: 'A legal partner you can trust.',
   aboutP1:
-    'Pemenang Mandiri Lawfirm & Partners is prepared to support clients with practical legal insight, careful case review, and coordinated follow-up. We understand that claim disputes can involve both legal interpretation and business sensitivity.',
+    'Pemenang Mandiri Lawfirm & Partners is prepared to support clients with practical legal insight, careful case review, and coordinated follow-up. We understand that legal disputes can involve both technical interpretation and business sensitivity.',
   aboutP2:
-    'Because of that, the firm can serve as a partner to help resolve legal issues linked to insurance claims—whether through consultation, document review, negotiation support, or further legal action when required.',
+    'Because of that, the firm serves as a partner to help resolve legal issues—whether through consultation, document review, negotiation support, or further legal action when required.',
 
   contactKicker: 'Contact',
   contactHeading: "Let's discuss your legal needs.",
   contactDescription:
-    'Reach out for an initial discussion regarding criminal law, civil law, or legal issues related to insurance claims.',
+    'Reach out for an initial discussion regarding criminal law, civil law, or other legal matters.',
   contactCta: 'Chat on WhatsApp',
   officeAddressLabel: 'Office Address',
   officeAddressValue: 'Blok C, Plaza Segi 8 No.819, Sonokwijenan, Sukomanunggal, Surabaya, East Java 60255',
@@ -138,19 +129,13 @@ const id: PmlCopy = {
       kicker: 'Layanan Hukum Terpercaya',
       title: 'Pendampingan hukum profesional dengan pendekatan yang tenang, modern, dan terpercaya.',
       description:
-        'Pemenang Mandiri Lawfirm & Partners membantu individu dan bisnis dalam permasalahan pidana dan perdata, sekaligus menjadi mitra hukum dalam penyelesaian masalah klaim asuransi.',
+        'Pemenang Mandiri Lawfirm & Partners membantu individu dan bisnis dalam permasalahan pidana dan perdata, dengan pendekatan yang tenang, modern, dan terpercaya.',
     },
     {
       kicker: 'Ahli Hukum Pidana & Perdata',
       title: 'Representasi hukum berpengalaman untuk pembelaan pidana dan sengketa perdata.',
       description:
         'Tim kami memberikan arahan strategis untuk penyelidikan, penuntutan, persidangan, sengketa kontrak, penagihan utang, dan masalah perdata lainnya dengan pendekatan praktis.',
-    },
-    {
-      kicker: 'Pendampingan Hukum Klaim Asuransi',
-      title: 'Mitra hukum yang berdedikasi untuk permasalahan terkait klaim asuransi.',
-      description:
-        'Kami mendukung klien dengan wawasan hukum praktis, kajian kasus yang cermat, dan tindak lanjut terkoordinasi untuk sengketa klaim yang melibatkan interpretasi hukum dan sensitivitas bisnis.',
     },
   ],
   heroCta1: 'Lihat Bidang Praktik',
@@ -176,16 +161,16 @@ const id: PmlCopy = {
   ],
 
   aboutKicker: 'Tentang Kami',
-  aboutHeading: 'Mitra hukum untuk permasalahan terkait klaim asuransi.',
+  aboutHeading: 'Mitra hukum yang dapat Anda percaya.',
   aboutP1:
-    'Pemenang Mandiri Lawfirm & Partners siap mendukung klien dengan wawasan hukum praktis, kajian kasus yang cermat, dan tindak lanjut yang terkoordinasi. Kami memahami bahwa sengketa klaim dapat melibatkan interpretasi hukum dan sensitivitas bisnis.',
+    'Pemenang Mandiri Lawfirm & Partners siap mendukung klien dengan wawasan hukum praktis, kajian kasus yang cermat, dan tindak lanjut yang terkoordinasi. Kami memahami bahwa sengketa hukum dapat melibatkan interpretasi teknis dan sensitivitas bisnis.',
   aboutP2:
-    'Oleh karena itu, firma dapat berperan sebagai mitra untuk membantu menyelesaikan masalah hukum terkait klaim asuransi—baik melalui konsultasi, tinjauan dokumen, dukungan negosiasi, maupun tindakan hukum lebih lanjut bila diperlukan.',
+    'Oleh karena itu, firma berperan sebagai mitra untuk membantu menyelesaikan masalah hukum—baik melalui konsultasi, tinjauan dokumen, dukungan negosiasi, maupun tindakan hukum lebih lanjut bila diperlukan.',
 
   contactKicker: 'Kontak',
   contactHeading: 'Mari diskusikan kebutuhan hukum Anda.',
   contactDescription:
-    'Hubungi kami untuk diskusi awal mengenai hukum pidana, hukum perdata, atau masalah hukum terkait klaim asuransi.',
+    'Hubungi kami untuk diskusi awal mengenai hukum pidana, hukum perdata, atau masalah hukum lainnya.',
   contactCta: 'Chat via WhatsApp',
   officeAddressLabel: 'Alamat Kantor',
   officeAddressValue: 'Blok C, Plaza Segi 8 No.819, Sonokwijenan, Kec. Sukomanunggal, Surabaya, Jawa Timur 60255',

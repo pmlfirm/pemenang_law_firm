@@ -151,7 +151,7 @@ function friendlyResponse(reply: string, source: 'local' | 'gemini' | 'fallback'
       reply,
       source,
       handoff,
-      handoffHref: handoff ? siteRoutes.contact : undefined,
+      handoffHref: handoff ? siteRoutes.home : undefined,
     },
     { status: 200, headers: { 'Cache-Control': 'no-store' } },
   )

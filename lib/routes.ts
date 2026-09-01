@@ -5,11 +5,6 @@
  */
 export const siteRoutes = {
   home: '/',
-  products: '/products',
-  companyProfile: '/company-profile',
-  ourPartner: '/our-partner',
-  contact: '/contact-us',
-  pml: '/pml',
   chatApi: '/api/chat',
   manifest: '/manifest.webmanifest',
   sitemap: '/sitemap.xml',

@@ -1,12 +1,5 @@
-import { pmlConfig } from '@/lib/pml-content'
-import {
-  companyAbout,
-  contactDirectory,
-  marineSubProductSlugs,
-  productIds,
-  siteConfig,
-  siteRoutes,
-} from '@/lib/site-data'
+import { pmlConfig, pmlCopy } from '@/lib/pml-content'
+import { contactById, siteConfig, siteRoutes } from '@/lib/site-data'
 import type { AppLanguage } from '@/lib/language-types'
 
 export type AiChatMessage = {
@@ -14,17 +7,7 @@ export type AiChatMessage = {
   content: string
 }
 
-/** Derived from the product catalogue so links can never drift out of sync. */
-const productLinks = {
-  marine: `${siteRoutes.products}/${productIds.marine}`,
-  marineCargo: `${siteRoutes.products}/${marineSubProductSlugs.marineCargo}`,
-  marineHull: `${siteRoutes.products}/${marineSubProductSlugs.marineHull}`,
-  fireProperty: `${siteRoutes.products}/${productIds.property}`,
-  motorVehicle: `${siteRoutes.products}/${productIds.vehicle}`,
-  travel: `${siteRoutes.products}/${productIds.travel}`,
-  liability: `${siteRoutes.products}/${productIds.liability}`,
-  claim: `${siteRoutes.products}/${productIds.claim}`,
-} as const
+const officialContact = contactById['pml-law-firm']
 
 function normalizeQuestion(value?: string) {
   return (value || '').toLowerCase().trim()
@@ -34,18 +17,12 @@ function countWords(value: string) {
   return value.split(/\s+/).filter(Boolean).length
 }
 
-function formatContactLines() {
-  return contactDirectory
-    .map((contact) => `- ${contact.title}: ${contact.whatsapp.displayNumber} (WhatsApp)`)
-    .join('\n')
-}
-
 function absoluteUrl(origin: string, path: string) {
   return `${origin}${path}`
 }
 
-function findContact(id: string) {
-  return contactDirectory.find((item) => item.id === id)
+function officialContactLine() {
+  return `- ${officialContact.title}: ${officialContact.whatsapp.displayNumber} (WhatsApp)`
 }
 
 /* ------------------------------------------------------------------ */
@@ -53,44 +30,21 @@ function findContact(id: string) {
 /* ------------------------------------------------------------------ */
 
 export function buildAiSystemInstructions(origin: string, language: AppLanguage = 'en') {
-  const about = companyAbout
   const link = (path: string) => absoluteUrl(origin, path)
+  const t = pmlCopy.en
 
   const facts = [
-    `Company: ${siteConfig.name}`,
-    `Established: ${about.founded} as ${about.tradeName}, based in ${about.address}`,
-    `License Number: ${about.licenseNumber} (registered ${about.licenseDate})`,
-    `Trade Registration: ${about.tradeRegistration}. Business Permit: ${about.businessPermit}`,
-    `Vision: ${about.vision.en}`,
-    `Mission: ${about.mission.en.join(' | ')}`,
+    `Company: ${pmlConfig.name}`,
+    `Office address: ${pmlConfig.address.full}`,
+    `Phone / WhatsApp: ${officialContact.whatsapp.displayNumber}`,
     `Instagram: ${siteConfig.instagram}`,
   ].join('\n')
 
-  const products = [
-    `Marine Cargo (${link(productLinks.marineCargo)}): ${about.products.marineCargo.en}`,
-    `Marine Hull (${link(productLinks.marineHull)}): ${about.products.marineHull.en}`,
-    `FIRE / Property (${link(productLinks.fireProperty)}): ${about.products.fireProperty.en}`,
-    `Motor Vehicle (${link(productLinks.motorVehicle)}): ${about.products.motorVehicle.en}`,
-    `Travel (${link(productLinks.travel)}): ${about.products.travel.en}`,
-    `Liability (${link(productLinks.liability)}): ${about.products.liability.en}`,
-    `Claim Assistance (${link(productLinks.claim)}): ${about.products.claimAssistance.en}`,
-  ].join('\n')
+  const practiceAreas = t.practiceAreas
+    .map((area) => `${area.title}: ${area.description} (${area.points.join(', ')})`)
+    .join('\n')
 
-  const lawFirm = [
-    `${about.lawFirm.name} is the law firm division of the group and lives on this same website at ${link(about.lawFirm.path)}.`,
-    about.lawFirm.description.en,
-    `Law firm office: ${about.lawFirm.address}. Phone: ${pmlConfig.phone}.`,
-    'It handles criminal law, civil law, and legal support for insurance claim disputes.',
-  ].join('\n')
-
-  const pages = [
-    `Home: ${link(siteRoutes.home)}`,
-    `Products: ${link(siteRoutes.products)}`,
-    `Company Profile: ${link(siteRoutes.companyProfile)}`,
-    `Our Partner: ${link(siteRoutes.ourPartner)}`,
-    `Get in Touch: ${link(siteRoutes.contact)}`,
-    `PML law firm: ${link(about.lawFirm.path)}`,
-  ].join('\n')
+  const pages = [`Home (single-page site): ${link(siteRoutes.home)}`].join('\n')
 
   const rules =
     language === 'id'
@@ -98,30 +52,29 @@ export function buildAiSystemInstructions(origin: string, language: AppLanguage 
           'Jawab dalam Bahasa Indonesia yang sopan dan profesional, kecuali pengguna jelas menulis dalam Bahasa Inggris.',
           'Jawab langsung ke inti pertanyaan. Maksimal sekitar 150 kata.',
           'Gunakan paragraf pendek. Pakai bullet hanya jika benar-benar membantu (maksimal 5 poin).',
-          'Jangan pernah mengarang premi, tarif, ketentuan polis, diskon, atau janji penerimaan klaim. Jika ditanya harga, jelaskan bahwa premi bergantung pada objek, nilai pertanggungan, dan profil risiko, lalu arahkan ke WhatsApp produk yang relevan.',
-          'Tutup jawaban dengan satu kontak WhatsApp yang paling relevan beserta nomornya, bukan seluruh daftar.',
+          'Jangan pernah mengarang biaya jasa hukum, tarif, atau janji hasil perkara. Jika ditanya biaya, jelaskan bahwa biaya tergantung pada kompleksitas kasus, lalu arahkan ke WhatsApp kantor.',
+          'Tutup jawaban dengan kontak WhatsApp resmi beserta nomornya.',
           'Hanya gunakan tautan dari daftar halaman di atas. Jangan membuat URL baru.',
-          'Jika pertanyaannya di luar asuransi dan layanan hukum perusahaan ini, katakan dengan sopan bahwa itu di luar cakupan lalu tawarkan bantuan yang relevan.',
+          'Jika pertanyaannya di luar layanan hukum firma ini, katakan dengan sopan bahwa itu di luar cakupan lalu tawarkan bantuan yang relevan.',
           'Jangan mengulang sapaan panjang atau menyebut dirimu sebagai AI di setiap jawaban.',
         ]
       : [
           'Reply in clear, professional English unless the user clearly writes in Indonesian.',
           'Answer the actual question first. Keep it under roughly 150 words.',
           'Use short paragraphs. Use bullets only when they genuinely help (max 5 points).',
-          'Never invent premiums, rates, policy wording, discounts, or claim-acceptance promises. If asked about price, explain that premiums depend on the insured object, declared value, and risk profile, then point to the relevant product WhatsApp contact.',
-          'End with the single most relevant WhatsApp contact and its number, not the whole list.',
+          'Never invent legal fees, rates, or promises about case outcomes. If asked about cost, explain that fees depend on case complexity, then point to the office WhatsApp contact.',
+          'End with the official WhatsApp contact and its number.',
           'Only use links from the page list above. Never invent URLs.',
-          'If a question falls outside this company\'s insurance and legal services, say so politely and offer what you can help with.',
+          "If a question falls outside this firm's legal services, say so politely and offer what you can help with.",
           'Do not repeat long greetings or announce that you are an AI in every reply.',
         ]
 
   return [
-    `You are the website assistant for ${siteConfig.name}, an insurance consultant in ${about.address} that also operates the ${about.lawFirm.name} law firm division.`,
+    `You are the website assistant for ${pmlConfig.name}, a law firm based in ${pmlConfig.address.city}, Indonesia.`,
     `# Company facts\n${facts}`,
-    `# Products consulted\n${products}`,
-    `# Law firm division (PML)\n${lawFirm}`,
+    `# Practice areas\n${practiceAreas}`,
     `# Site pages\n${pages}`,
-    `# Official WhatsApp contacts\n${formatContactLines()}`,
+    `# Official WhatsApp contact\n${officialContactLine()}`,
     `# Answering rules\n${rules.map((rule) => `- ${rule}`).join('\n')}`,
   ].join('\n\n')
 }
@@ -130,29 +83,12 @@ export function buildAiSystemInstructions(origin: string, language: AppLanguage 
 /*  Handoff reply used when no AI answer is available                  */
 /* ------------------------------------------------------------------ */
 
-function buildContactHandoffReply(question = '', language: AppLanguage = 'en') {
-  const q = normalizeQuestion(question)
-  let recommended = contactDirectory.find((contact) => q.includes(contact.id.replaceAll('-', ' ')))
-
-  if (!recommended) {
-    if (q.includes('cargo')) recommended = findContact('marine-cargo')
-    if (q.includes('hull') || q.includes('kapal')) recommended = findContact('marine-hull')
-    if (q.includes('kendaraan') || q.includes('vehicle') || q.includes('mobil') || q.includes('motor')) recommended = findContact('motor-vehicle')
-    if (q.includes('property') || q.includes('fire') || q.includes('properti') || q.includes('kebakaran')) recommended = findContact('fire-property')
-    if (q.includes('travel') || q.includes('perjalanan')) recommended = findContact('travel')
-    if (q.includes('liability') || q.includes('tanggung jawab')) recommended = findContact('liability')
-    if (q.includes('claim') || q.includes('klaim')) recommended = findContact('claim')
-  }
-
+function buildContactHandoffReply(language: AppLanguage = 'en') {
   if (language === 'id') {
-    return recommended
-      ? `Untuk tindak lanjut yang lebih akurat, silakan lanjutkan ke WhatsApp ${recommended.title} di ${recommended.whatsapp.displayNumber}. Jika Anda mau, Anda juga dapat membuka daftar kontak produk dan memilih tim yang paling sesuai.`
-      : `Untuk tindak lanjut yang lebih akurat, silakan lanjutkan melalui daftar kontak WhatsApp produk dan pilih tim yang paling sesuai dengan kebutuhan Anda.`
+    return `Untuk tindak lanjut yang lebih akurat, silakan lanjutkan ke WhatsApp ${officialContact.title} di ${officialContact.whatsapp.displayNumber}.`
   }
 
-  return recommended
-    ? `For more accurate follow-up, please continue via the ${recommended.title} WhatsApp contact at ${recommended.whatsapp.displayNumber}. You can also open the product contact list and choose the most relevant team.`
-    : `For more accurate follow-up, please continue through the product WhatsApp contact list and choose the team that best matches your needs.`
+  return `For more accurate follow-up, please continue via the ${officialContact.title} WhatsApp contact at ${officialContact.whatsapp.displayNumber}.`
 }
 
 /* ------------------------------------------------------------------ */
@@ -162,9 +98,9 @@ function buildContactHandoffReply(question = '', language: AppLanguage = 'en') {
 /*  must not be paraphrased by a model, and returns null for anything   */
 /*  else so the request reaches Gemini.                                 */
 /*                                                                     */
-/*  resolveOfflineAssistantReply adds the keyword product answers and   */
-/*  is used only when Gemini is unavailable (missing API key, rate      */
-/*  limit, network error, or static hosting without the API route).     */
+/*  resolveOfflineAssistantReply adds the keyword answers and is used   */
+/*  only when Gemini is unavailable (missing API key, rate limit,       */
+/*  network error, or static hosting without the API route).            */
 /* ------------------------------------------------------------------ */
 
 export function resolveLocalAssistantReply(
@@ -173,7 +109,6 @@ export function resolveLocalAssistantReply(
   language: AppLanguage = 'en',
 ) {
   const q = normalizeQuestion(question)
-  const about = companyAbout
   const words = countWords(q)
   const answer = (en: string, id: string) => (language === 'id' ? id : en)
 
@@ -182,58 +117,40 @@ export function resolveLocalAssistantReply(
   /* --- Greetings (short messages only, so real questions still reach the AI) --- */
   if (words <= 4 && /^(hi|hello|hey|halo|hai|pagi|siang|sore|malam|selamat)\b/.test(q)) {
     return answer(
-      'Hello! I can help explain our insurance products, company profile, and direct you to the right WhatsApp contact. What would you like to know?',
-      'Halo! Saya dapat membantu menjelaskan produk asuransi, profil perusahaan, dan mengarahkan Anda ke kontak WhatsApp yang tepat. Apa yang ingin Anda ketahui?',
+      'Hello! I can help explain our legal services and direct you to our WhatsApp contact. What would you like to know?',
+      'Halo! Saya dapat membantu menjelaskan layanan hukum kami dan mengarahkan Anda ke kontak WhatsApp yang tepat. Apa yang ingin Anda ketahui?',
     )
   }
 
   /* --- Thanks (short messages only) --- */
   if (words <= 5 && /(terima kasih|makasih|thank you|thanks|thx)/.test(q)) {
     return answer(
-      "You're welcome! Feel free to ask if you have any other questions about our insurance products or services.",
-      'Sama-sama! Jangan ragu untuk bertanya jika Anda memiliki pertanyaan lain tentang produk atau layanan asuransi kami.',
+      "You're welcome! Feel free to ask if you have any other questions about our legal services.",
+      'Sama-sama! Jangan ragu untuk bertanya jika Anda memiliki pertanyaan lain tentang layanan hukum kami.',
     )
   }
 
-  /* --- Price guardrail: never let a model quote a premium --- */
-  if (/(harga|biaya|premi|tarif|price|cost|quote|berapa bayar)/.test(q)) {
+  /* --- Fee guardrail: never let a model quote a legal fee --- */
+  if (/(harga|biaya|tarif|price|cost|fee|berapa bayar)/.test(q)) {
     return answer(
-      `Insurance premiums and consultation quotes depend on your specific risk profile, asset values, or coverage needs. Please select a product WhatsApp contact to discuss with our team:\n${formatContactLines()}\n\nContact page: ${absoluteUrl(requestOrigin, siteRoutes.contact)}`,
-      `Besaran premi dan konsultasi penutupan asuransi disesuaikan dengan nilai objek, jenis risiko, serta kebutuhan perlindungan Anda. Silakan hubungi tim kami via WhatsApp resmi:\n${formatContactLines()}\n\nHalaman kontak: ${absoluteUrl(requestOrigin, siteRoutes.contact)}`,
+      `Legal service fees depend on the complexity of your case. Please contact us directly on WhatsApp to discuss:\n${officialContactLine()}`,
+      `Biaya jasa hukum tergantung pada kompleksitas kasus Anda. Silakan hubungi kami langsung via WhatsApp untuk berdiskusi:\n${officialContactLine()}`,
     )
   }
 
-  /* --- Official contact list --- */
+  /* --- Official contact --- */
   if (/(contact us|kontak|whatsapp|hubungi|telepon|nomor telepon|phone number)/.test(q)) {
     return answer(
-      `Here are the official WhatsApp contacts by product:\n${formatContactLines()}\n\nContact page: ${absoluteUrl(requestOrigin, siteRoutes.contact)}`,
-      `Berikut kontak WhatsApp resmi per produk:\n${formatContactLines()}\n\nHalaman kontak: ${absoluteUrl(requestOrigin, siteRoutes.contact)}`,
-    )
-  }
-
-  /* --- Registration numbers --- */
-  if (/(lisensi|license|registrasi|nomor izin|izin usaha|siup)/.test(q)) {
-    return answer(
-      `License Number: ${about.licenseNumber}\nTrade Registration: ${about.tradeRegistration}\nBusiness Permit: ${about.businessPermit}\n\nRegistered since ${about.licenseDate}.`,
-      `Nomor Lisensi: ${about.licenseNumber}\nNomor Daftar Perdagangan: ${about.tradeRegistration}\nNomor Surat Ijin Usaha: ${about.businessPermit}\n\nTerdaftar sejak ${about.licenseDate}.`,
-    )
-  }
-
-  /* --- Company timeline --- */
-  if (/(sejarah|history|didirikan|founded|kapan berdiri|berdiri sejak)/.test(q)) {
-    const lang = language === 'id' ? 'id' : 'en'
-    const timeline = about.timeline.map((entry) => `• ${entry.date}: ${entry[lang]}`).join('\n')
-    return answer(
-      `Company History:\n${timeline}\n\nLicense: ${about.licenseNumber}\nTrade Registration: ${about.tradeRegistration}\n\nMore: ${absoluteUrl(requestOrigin, siteRoutes.companyProfile)}`,
-      `Sejarah Perusahaan:\n${timeline}\n\nNomor Lisensi: ${about.licenseNumber}\nNomor Daftar Perdagangan: ${about.tradeRegistration}\n\nSelengkapnya: ${absoluteUrl(requestOrigin, siteRoutes.companyProfile)}`,
+      `Here is our official WhatsApp contact:\n${officialContactLine()}`,
+      `Berikut kontak WhatsApp resmi kami:\n${officialContactLine()}`,
     )
   }
 
   /* --- Office address --- */
   if (/(alamat|address|lokasi kantor|office location|kantor dimana|di mana kantor)/.test(q)) {
     return answer(
-      `Insurance consultation office: ${about.address}.\nLaw firm office (${about.lawFirm.name}): ${about.lawFirm.address}.\n\nContact page: ${absoluteUrl(requestOrigin, siteRoutes.contact)}`,
-      `Kantor konsultasi asuransi: ${about.address}.\nKantor firma hukum (${about.lawFirm.name}): ${about.lawFirm.address}.\n\nHalaman kontak: ${absoluteUrl(requestOrigin, siteRoutes.contact)}`,
+      `Office address: ${pmlConfig.address.full}.\n\nContact: ${absoluteUrl(requestOrigin, siteRoutes.home)}`,
+      `Alamat kantor: ${pmlConfig.address.full}.\n\nKontak: ${absoluteUrl(requestOrigin, siteRoutes.home)}`,
     )
   }
 
@@ -250,99 +167,47 @@ export function resolveOfflineAssistantReply(
   if (deterministic) return deterministic
 
   const q = normalizeQuestion(question)
-  const about = companyAbout
+  const t = pmlCopy[language]
   const answer = (en: string, id: string) => (language === 'id' ? id : en)
 
-  const productAnswer = (
-    copy: { en: string; id: string },
-    contactId: string,
-    label: string,
-    href: string,
-  ) => {
-    const contact = findContact(contactId)
+  if (!q) return buildContactHandoffReply(language)
+
+  /* --- Practice areas listing --- */
+  if (/(practice area|bidang praktik|layanan|services|apa saja)/.test(q)) {
     return answer(
-      `${copy.en}\n\nFor a direct discussion, please contact ${label} WhatsApp at ${contact?.whatsapp.displayNumber}.\nProduct page: ${absoluteUrl(requestOrigin, href)}`,
-      `${copy.id}\n\nUntuk diskusi langsung, silakan hubungi WhatsApp ${label} di ${contact?.whatsapp.displayNumber}.\nHalaman produk: ${absoluteUrl(requestOrigin, href)}`,
+      `We handle two main practice areas: ${t.practiceAreas.map((a) => a.title).join(' and ')}.\n\n${officialContactLine()}`,
+      `Kami menangani dua bidang praktik utama: ${t.practiceAreas.map((a) => a.title).join(' dan ')}.\n\n${officialContactLine()}`,
     )
   }
 
-  if (!q) return buildContactHandoffReply(question, language)
-
-  /* --- Product listing --- */
-  if (/(produk|product|services|layanan)/.test(q)) {
+  /* --- Criminal law --- */
+  if (/(pidana|criminal)/.test(q)) {
+    const area = t.practiceAreas[0]
     return answer(
-      `We consult on six main categories: Marine Insurance, FIRE / Property Insurance, Motor Vehicle Insurance, Travel Insurance, Liability Insurance, and Claim Assistance. View all: ${absoluteUrl(requestOrigin, siteRoutes.products)}`,
-      `Kami mengkonsultasikan enam kategori utama: Marine Insurance, FIRE / Property Insurance, Motor Vehicle Insurance, Travel Insurance, Liability Insurance, dan Claim Assistance. Lihat semua: ${absoluteUrl(requestOrigin, siteRoutes.products)}`,
+      `${area.title}: ${area.description}\n\n${officialContactLine()}`,
+      `${area.title}: ${area.description}\n\n${officialContactLine()}`,
     )
   }
 
-  /* --- ICC clauses --- */
-  if (q.includes('icc') || (q.includes('clause') && q.includes('cargo'))) {
-    const contact = findContact('marine-cargo')
+  /* --- Civil law --- */
+  if (/(perdata|civil|kontrak|contract|sengketa|dispute)/.test(q)) {
+    const area = t.practiceAreas[1]
     return answer(
-      `ICC stands for Institute Cargo Clauses. There are 3 types: ICC "A" (All Risks, most comprehensive), ICC "B" (Named Perils Broad, medium), and ICC "C" (Named Perils Basic, covers major risks only). For detailed comparison, visit: ${absoluteUrl(requestOrigin, productLinks.marineCargo)}\n\nContact: ${contact?.whatsapp.displayNumber}`,
-      `ICC singkatan dari Institute Cargo Clauses. Ada 3 jenis: ICC "A" (All Risks, paling lengkap), ICC "B" (Named Perils Broad, menengah), dan ICC "C" (Named Perils Basic, hanya risiko utama). Lihat perbandingan detail: ${absoluteUrl(requestOrigin, productLinks.marineCargo)}\n\nKontak: ${contact?.whatsapp.displayNumber}`,
+      `${area.title}: ${area.description}\n\n${officialContactLine()}`,
+      `${area.title}: ${area.description}\n\n${officialContactLine()}`,
     )
   }
 
-  if (q.includes('marine cargo') || q.includes('kargo')) {
-    return productAnswer(about.products.marineCargo, 'marine-cargo', 'Marine Cargo', productLinks.marineCargo)
-  }
-
-  if (q.includes('marine hull') || (q.includes('kapal') && !q.includes('cargo'))) {
-    return productAnswer(about.products.marineHull, 'marine-hull', 'Marine Hull', productLinks.marineHull)
-  }
-
-  if (/(property|properti|fire|kebakaran|flexas|gedung|bangunan)/.test(q)) {
-    return productAnswer(about.products.fireProperty, 'fire-property', 'FIRE / Property', productLinks.fireProperty)
-  }
-
-  if (/(kendaraan|vehicle|mobil|motor|comprehensive|tlo)/.test(q)) {
-    return productAnswer(about.products.motorVehicle, 'motor-vehicle', 'Motor Vehicle', productLinks.motorVehicle)
-  }
-
-  if (/(travel|perjalanan)/.test(q)) {
-    return productAnswer(about.products.travel, 'travel', 'Travel Insurance', productLinks.travel)
-  }
-
-  if (/(liability|tanggung jawab)/.test(q)) {
-    return productAnswer(about.products.liability, 'liability', 'Liability Insurance', productLinks.liability)
-  }
-
-  if (/(claim|klaim)/.test(q)) {
-    const contact = findContact('claim')
+  /* --- About / company profile --- */
+  if (/(company|profil|perusahaan|tentang|about|firma|law firm|pengacara)/.test(q)) {
     return answer(
-      `${about.products.claimAssistance.en}\n\nTo get started, prepare: policy number, chronology, photos, and supporting documents. Contact Claim Assistance WhatsApp at ${contact?.whatsapp.displayNumber}.\nProduct page: ${absoluteUrl(requestOrigin, productLinks.claim)}`,
-      `${about.products.claimAssistance.id}\n\nUntuk memulai, siapkan: nomor polis, kronologi, foto, dan dokumen pendukung. Hubungi WhatsApp Claim Assistance di ${contact?.whatsapp.displayNumber}.\nHalaman produk: ${absoluteUrl(requestOrigin, productLinks.claim)}`,
-    )
-  }
-
-  /* --- Vision & mission --- */
-  if (/(visi|misi|vision|mission)/.test(q)) {
-    return answer(
-      `Vision: ${about.vision.en}\n\nMission:\n${about.mission.en.map((m, i) => `${i + 1}. ${m}`).join('\n')}\n\nLearn more: ${absoluteUrl(requestOrigin, siteRoutes.companyProfile)}`,
-      `Visi: ${about.vision.id}\n\nMisi:\n${about.mission.id.map((m, i) => `${i + 1}. ${m}`).join('\n')}\n\nSelengkapnya: ${absoluteUrl(requestOrigin, siteRoutes.companyProfile)}`,
-    )
-  }
-
-  /* --- Law firm division --- */
-  if (/(pemenang mandiri|law firm|lawfirm|firma hukum|pengacara|hukum|pidana|perdata|pml)/.test(q)) {
-    return answer(
-      `${about.lawFirm.name}: ${about.lawFirm.description.en}\n\nOffice: ${about.lawFirm.address}\nOpen the page: ${absoluteUrl(requestOrigin, about.lawFirm.path)}`,
-      `${about.lawFirm.name}: ${about.lawFirm.description.id}\n\nKantor: ${about.lawFirm.address}\nBuka halaman: ${absoluteUrl(requestOrigin, about.lawFirm.path)}`,
-    )
-  }
-
-  /* --- Company profile --- */
-  if (/(company|profil|perusahaan|tentang|about)/.test(q)) {
-    return answer(
-      `${siteConfig.name} was established on ${about.founded} in ${about.address} as a trusted insurance consultant. We consult on Marine, Property, Motor Vehicle, Travel, Liability insurance, and Claim Assistance.\n\nCompany Profile: ${absoluteUrl(requestOrigin, siteRoutes.companyProfile)}`,
-      `${siteConfig.name} didirikan pada ${about.founded} di ${about.address} sebagai konsultan asuransi terpercaya. Kami mengkonsultasikan Marine, Property, Motor Vehicle, Travel, Liability insurance, dan Claim Assistance.\n\nProfil Perusahaan: ${absoluteUrl(requestOrigin, siteRoutes.companyProfile)}`,
+      `${pmlConfig.name}: ${pmlConfig.description.en}\n\nOffice: ${pmlConfig.address.full}\n\n${officialContactLine()}`,
+      `${pmlConfig.name}: ${pmlConfig.description.id}\n\nKantor: ${pmlConfig.address.full}\n\n${officialContactLine()}`,
     )
   }
 
   return answer(
-    `Thank you for your question. For accurate product details, policy consultations, and claim guidance, please choose from our official product WhatsApp contacts:\n${formatContactLines()}\n\nProducts: ${absoluteUrl(requestOrigin, siteRoutes.products)}`,
-    `Terima kasih atas pertanyaan Anda. Untuk informasi detail produk, konsultasi polis, dan panduan klaim secara akurat, silakan hubungi tim kami melalui WhatsApp produk resmi:\n${formatContactLines()}\n\nProduk: ${absoluteUrl(requestOrigin, siteRoutes.products)}`,
+    `Thank you for your question. For accurate legal guidance, please contact us directly on WhatsApp:\n${officialContactLine()}`,
+    `Terima kasih atas pertanyaan Anda. Untuk panduan hukum yang akurat, silakan hubungi kami langsung via WhatsApp:\n${officialContactLine()}`,
   )
 }

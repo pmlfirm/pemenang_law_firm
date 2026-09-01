@@ -12,27 +12,22 @@ export default function Footer() {
 
   const labels = {
     followUs: pickLanguage(language, { en: 'Follow Us', id: 'Ikuti Kami' }),
-    description: pickLanguage(language, {
-      en: 'Structured insurance consultation for marine, property, vehicle, travel, liability, and claim support needs.',
-      id: 'Konsultasi asuransi yang terstruktur untuk kebutuhan marine, properti, kendaraan, perjalanan, liability, dan bantuan klaim.',
-    }),
     allRightsReserved: pickLanguage(language, { en: 'All rights reserved.', id: 'Seluruh hak cipta dilindungi.' }),
   }
 
   return (
     <footer className="overflow-x-clip bg-[#07111F] text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid items-start gap-10 py-12 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-12">
+        <div className="grid items-start gap-10 py-8 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-12">
           <div>
-            <div className="mb-5">
+            <div className="mb-2">
               <BrandLogo imageClassName="h-10 w-10 sm:h-12 sm:w-12" href={siteRoutes.home} />
             </div>
-            <p className="max-w-md text-sm leading-7 text-white/65">{labels.description}</p>
             <a
               href={pmlConfig.address.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 flex max-w-md items-start gap-2.5 text-sm leading-7 text-white/65 transition-colors hover:text-[#D4AF37]"
+              className="mt-2 flex max-w-md items-start gap-2.5 text-sm leading-7 text-white/65 transition-colors hover:text-[#D4AF37]"
             >
               <MapPin className="mt-1.5 h-4 w-4 shrink-0 text-[#D4AF37]" aria-hidden="true" />
               <span>{pmlConfig.address.full}</span>
@@ -55,7 +50,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 py-6 text-center text-xs leading-6 text-white/45">
+        <div className="border-t border-white/10 py-5 text-center text-xs leading-6 text-white/45">
           <p>&copy; {currentYear} {siteConfig.name}. {labels.allRightsReserved}</p>
         </div>
       </div>

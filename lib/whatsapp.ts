@@ -1,6 +1,5 @@
 /**
  * Single source for WhatsApp number handling.
- * Used by both the insurance contact directory and the PML law firm page.
  */
 
 /** Accepts 08..., 62..., or +62 ... and returns digits in 62... form. */

@@ -55,10 +55,7 @@ function MessageText({ content }: { content: string }) {
     try {
       const pathname = new URL(value).pathname
 
-      if (pathname === siteRoutes.products) return pickLanguage(language, { en: 'Open Products page', id: 'Buka halaman Produk' })
-      if (pathname.startsWith(`${siteRoutes.products}/`)) return pickLanguage(language, { en: 'Open product details', id: 'Buka detail produk' })
-      if (pathname === siteRoutes.companyProfile) return pickLanguage(language, { en: 'Open Company Profile page', id: 'Buka halaman Profil Perusahaan' })
-      if (pathname === siteRoutes.contact) return pickLanguage(language, { en: 'Open Get in Touch page', id: 'Buka halaman Hubungi Kami' })
+      if (pathname === siteRoutes.home) return pickLanguage(language, { en: 'Open homepage', id: 'Buka halaman utama' })
     } catch {
       // Keep generic label.
     }
@@ -97,8 +94,8 @@ export default function AiChatWidget() {
       id: 'welcome',
       role: 'assistant',
       content: pickLanguage(language, {
-        en: 'Hello! I can help explain our insurance products and direct you to the right WhatsApp contact. Please tell me what you need.',
-        id: 'Halo! Saya dapat membantu menjelaskan produk asuransi kami dan mengarahkan Anda ke kontak WhatsApp yang tepat. Silakan sampaikan kebutuhan Anda.',
+        en: 'Hello! I can help explain our legal services and direct you to our WhatsApp contact. Please tell me what you need.',
+        id: 'Halo! Saya dapat membantu menjelaskan layanan hukum kami dan mengarahkan Anda ke kontak WhatsApp yang tepat. Silakan sampaikan kebutuhan Anda.',
       }),
     }),
     [language],
@@ -108,14 +105,14 @@ export default function AiChatWidget() {
     () =>
       pickLanguage(language, {
         en: [
-          'What products do you offer?',
-          'What is the difference between Marine Cargo and Marine Hull?',
-          'What should I prepare before submitting a claim?',
+          'What practice areas do you handle?',
+          'Do you handle criminal law cases?',
+          'Do you handle civil law disputes?',
         ],
         id: [
-          'Produk apa saja yang tersedia?',
-          'Apa perbedaan Marine Cargo dan Marine Hull?',
-          'Apa yang perlu saya siapkan sebelum mengajukan klaim?',
+          'Bidang praktik apa saja yang ditangani?',
+          'Apakah menangani kasus hukum pidana?',
+          'Apakah menangani sengketa hukum perdata?',
         ],
       }),
     [language],
