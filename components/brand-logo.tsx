@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { pickLanguage, useLanguage } from '@/lib/language'
 import { siteConfig, siteRoutes } from '@/lib/site-data'
 
 type BrandLogoProps = {
@@ -14,6 +13,9 @@ type BrandLogoProps = {
   onClick?: () => void
 }
 
+/* Kept in English regardless of language — it's part of the firm's name. */
+const subtitle = 'Law Firm & Partners'
+
 export default function BrandLogo({
   withText = true,
   className = '',
@@ -22,12 +24,6 @@ export default function BrandLogo({
   href = siteRoutes.home,
   onClick,
 }: BrandLogoProps) {
-  const { language } = useLanguage()
-  const subtitle = pickLanguage(language, {
-    en: 'Law Firm & Partners',
-    id: 'Firma Hukum & Rekan',
-  })
-
   return (
     <Link
       href={href}
@@ -50,10 +46,7 @@ export default function BrandLogo({
 
       {withText && (
         <div className="min-w-0 leading-tight">
-          <p className="text-xs font-extrabold tracking-wide sm:text-sm lg:text-lg">
-            <span className="sm:hidden">{siteConfig.shortName}</span>
-            <span className="hidden sm:inline">{siteConfig.name}</span>
-          </p>
+          <p className="text-xs font-extrabold tracking-wide sm:text-sm lg:text-lg">{siteConfig.shortName}</p>
           <p className="text-[8px] uppercase tracking-[0.16em] text-white/55 sm:text-[10px] sm:tracking-[0.24em]">{subtitle}</p>
         </div>
       )}
